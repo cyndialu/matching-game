@@ -5,7 +5,7 @@ const theLeftSide = document.querySelector('#leftSide');
 const theRightSide = document.querySelector('#rightSide');
 const startButton = document.getElementById('btnStart');
 const endButton = document.getElementById('btnEnd');
-const introDiv = document.querySelector('.instruction');
+const introDiv = document.getElementById('instruction');
 
 startButton.addEventListener('click', () => {
     hintButton.disabled = false;
@@ -19,13 +19,13 @@ endButton.addEventListener('click', () =>{
 });
             
 function generateFaces(){
-    introDiv.style.display = 'none';
+    theLeftSide.innerHTML = '';
     document.querySelector('#score').innerHTML = score;
     for(let i=0; i<numberOfFaces; i++){
         const face = document.createElement('img');
         face.src = 'images/smile.png';
-        const randomTop = Math.floor(Math.random()*400);
-        const randomLeft = Math.floor(Math.random()*400);
+        const randomTop = Math.floor(Math.random()*300);
+        const randomLeft = Math.floor(Math.random()*300);
         face.style.top = randomTop + "px";
         face.style.left = randomLeft  + "px";
 
@@ -37,13 +37,13 @@ function generateFaces(){
             }
         });
         theLeftSide.appendChild(face);
-        startButton.disabled = true;
-        endButton.disabled = false;
     }
     const leftSideImages = theLeftSide.cloneNode(true);
     leftSideImages.removeChild(leftSideImages.lastChild);
     leftSideImages.id = "cloneLeftSide";
     theRightSide.appendChild(leftSideImages);
+    startButton.disabled = true;
+    endButton.disabled = false;
 }
 
 function nextLevel(){
@@ -60,15 +60,16 @@ function nextLevel(){
 }
             
 function gameOver(){
-    alert("Sorry! Game Over!");
-    const imgToRemove = theLeftSide.getElementsByTagName('img');
+    alert(`Sorry! Game Over!\nYour score: ${score}`);
+    const imgToRemove = theLeftSide.getElementsByTagName('img');  
     while (imgToRemove.length > 0) {
         imgToRemove[0].remove();
-    }
-    introDiv.style.display = 'block';
+    } 
+    theLeftSide.appendChild(introDiv);
     theRightSide.innerHTML = '';
     score = 0;
-    document.querySelector('#score').innerHTML = score;
+    numberOfFaces = 3;
+    document.querySelector('#score').innerHTML = '';
     startButton.disabled = false;
     endButton.disabled = true;
     hintButton.disabled = true;
